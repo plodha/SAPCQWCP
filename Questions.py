@@ -5,7 +5,10 @@ from datetime import datetime, timedelta
 from dateutil.parser import parse
 import csv
 import io
+<<<<<<< HEAD
 #test
+=======
+>>>>>>> origin/master
 
 #import functions.py as function
 # delete csv content
@@ -122,4 +125,8 @@ for ii in range(no_of_pages):
 
 
 
+<<<<<<< HEAD
 print('Check for duplicates in Excel')
+=======
+print('Check for duplicates in Excel')
+>>>>>>> origin/master
