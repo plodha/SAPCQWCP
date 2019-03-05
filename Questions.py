@@ -123,8 +123,4 @@ for ii in range(no_of_pages):
 
 
 
-<<<<<<< HEAD
 print('Check for duplicates in Excel')
-=======
-print('Check for duplicates in Excel')
->>>>>>> origin/master
