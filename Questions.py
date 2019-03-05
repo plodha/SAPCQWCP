@@ -5,10 +5,8 @@ from datetime import datetime, timedelta
 from dateutil.parser import parse
 import csv
 import io
-<<<<<<< HEAD
-#test
-=======
->>>>>>> origin/master
+
+#roij
 
 #import functions.py as function
 # delete csv content
