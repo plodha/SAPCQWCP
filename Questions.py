@@ -15,7 +15,7 @@ import functions
 # import functions.py as function
 # delete csv content
 
-filename = 'Questions2.CSV'
+filename = 'Questions3.CSV'
 with open(filename, 'w', newline='') as csvfile:
     spamwriter = csv.writer(csvfile, delimiter=';', quotechar='|', quoting=csv.QUOTE_MINIMAL)
 
@@ -26,7 +26,7 @@ with open(filename, 'a', newline='') as csvfile:
 
 no_of_pages = 10
 count_items = 1
-for ii in range(7,no_of_pages):
+for ii in range(no_of_pages):
     url = "https://answers.sap.com/tags/73554900100800000266?page=" + str(
         ii) + "&pageSize=100&sort=active&filter=unanswered"
     content = urllib.request.urlopen(url).read()
