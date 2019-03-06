@@ -120,7 +120,7 @@ for ii in range(no_of_pages):
         if detail_user_tags is not None:
             all_tags = all_tags +", " + detail_user_tags
 
-        # output on console
+        # output on console dd
         print("Count:", str(count_items))
         print("URL:", url_text)
         print("Title:", title_text)
