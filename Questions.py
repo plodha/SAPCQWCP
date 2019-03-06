@@ -16,7 +16,7 @@ with open('Questions.CSV', 'w', newline='') as csvfile:
 # create csv and header
 with open('Questions.CSV', 'a', newline='') as csvfile:
     spamwriter = csv.writer(csvfile, delimiter=';', quotechar='|', quoting=csv.QUOTE_MINIMAL)
-    spamwriter.writerow(["Title", "Tags (separated with comma)", "Creation Date", "Status","Link"])
+    spamwriter.writerow(["Title", "All Tags", "Tags (separated with comma)", "Creation Date", "Status","Link"])
 
 no_of_pages=10
 count_items = 1
@@ -56,7 +56,7 @@ for ii in range(no_of_pages):
     def tags_format(tags_text):
         i = len(tags_text)
         tags_text = (tags_text).replace('\n', ',')
-        tags_text = (tags_text.replace(',SAP S/4HANA,', '')).strip('\n')
+        tags_text = (tags_text.replace(',SAP S/4HANA,', ''))
 
         # remove first comma
         if tags_text[:1] == ',':
@@ -91,25 +91,43 @@ for ii in range(no_of_pages):
 
         # get content
         title_text = (Title.text).strip('\n')
-        # debug
-        if "Purchase order type : Output management with BRF+" in title_text:
-            print ("stop")
-
         tags_text = tags_format(tags_text=Tags.text)
+        all_tags = tags_text
         date_text = convertDate(date=Date.text)
+        url_text = convertHtml_link(html_link=str(Title.contents[1]))
         closed_text ="-"
+        # hyperlink_text = '=HYPERLINK("http://www.Google.com\";\"Google")'  #was working but too slowly
 
         if Closed is not None:
             closed_text = "closed"
 
-        url_text = convertHtml_link(html_link = str(Title.contents[1]))
-        hyperlink_text = '=HYPERLINK("http://www.Google.com\";\"Google")'
+
+        # detailview of the question
+        content2 = urllib.request.urlopen(url_text).read()
+        soup2 = BeautifulSoup(content2, "lxml")
+        Questions2 = soup2.find_all("div", {"class": "dm-tags__content"})
+        detail_tags = (Questions2[0].text)
+
+        sep = '\n\n\n'
+        detail_tags = detail_tags.split(sep)
+       # detail_sap_tags = detail_tags[1].replace('SAP S/4HANA','')
+        detail_user_tags = detail_tags[2]
+        detail_user_tags = detail_user_tags.replace('|',',',)
+        detail_user_tags = detail_user_tags.replace('\n', '', )
+        detail_user_tags = detail_user_tags.replace('SAP S/4HANA, ', '')
+        detail_user_tags = detail_user_tags.replace('SAP S/4HANA','')
+
+        if detail_user_tags is not None:
+            all_tags = all_tags +", " + detail_user_tags
 
         # output on console
         print("Count:", str(count_items))
         print("URL:", url_text)
         print("Title:", title_text)
-        print("TAGS: ", tags_text),
+        print("All Tags: ", all_tags),
+        print("SAP Tags over: ", tags_text),
+     #   print("SAP Tags deta: ", detail_sap_tags),
+        print("User Tags: ", detail_user_tags),
         print("Date: ", date_text),
         print("Closed: ", closed_text),
         print("-----------------------------------------------------------------------")
@@ -117,9 +135,12 @@ for ii in range(no_of_pages):
         # wrtie to CSV
         with io.open('Questions.CSV', 'a', encoding="utf-8", newline='') as csvfile:
             spamwriter = csv.writer(csvfile, delimiter=';')
-            spamwriter.writerow([title_text, tags_text, date_text, closed_text, url_text])
+            spamwriter.writerow([title_text, all_tags, tags_text, date_text, closed_text, url_text])
 
         count_items = count_items+1
+
+        if count_items ==30:
+            print("ffds")
 
 
 
